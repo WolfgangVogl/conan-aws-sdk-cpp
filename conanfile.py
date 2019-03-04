@@ -192,6 +192,13 @@ conan_basic_setup()''')
     def package_info(self):
         libs = list([])
 
+        # https://github.com/aws/aws-sdk-cpp/issues/1020
+        # "Starting from 1.7.0, C++ SDK need dependencies on aws-c-common, aws-checksums and aws-c-event-stream."
+        # https://github.com/kmaragon/conan-aws-sdk-cpp/issues/3
+        libs.append("aws-c-common.lib")
+        libs.append("aws-c-event-stream.lib")
+        libs.append("aws-checksums.lib")
+
         for sdk in self.sdks:
             if getattr(self.options, "build_" + sdk):
                 libs.append("aws-cpp-sdk-" + sdk)
